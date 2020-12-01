@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Player class for the game Laser Defender
 public class Player : MonoBehaviour
 {
     // configuration parameters
@@ -29,22 +30,29 @@ public class Player : MonoBehaviour
         Fire();
     }
 
-    IEnumerator PrintAndWait()
-    {
-        Debug.Log("First message sent");
-        yield return new WaitForSeconds(3);
-        Debug.Log("Second message sent");
-    }
-
+    // Coroutine - used to make our player fire continuously
     private void Fire()
     {
         if (Input.GetButtonDown("Fire1"))
         {
+            firingCoroutine = StartCoroutine(FireContinuously());
+        }
+        if (Input.GetButtonUp("Fire1"))
+        {
+            StopCoroutine(firingCoroutine);
+        }
+    }
+
+    IEnumerator FireContinuously()
+    {
+        while (true)
+        {
             GameObject laser = Instantiate(
-                laserPrefab, 
-                transform.position, 
-                Quaternion.identity) as GameObject;
+                    laserPrefab,
+                    transform.position,
+                    Quaternion.identity) as GameObject;
             laser.GetComponent<Rigidbody2D>().velocity = new Vector2(0, projectileSpeed);
+            yield return new WaitForSeconds(projectileFiringPeriod);
         }
     }
 
