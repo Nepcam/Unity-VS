@@ -1,4 +1,3 @@
-// this script is setting up parameters for the waves of enemies that will be assigned
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +14,15 @@ public class WaveConfig : ScriptableObject
 
     public GameObject GetEnemyPrefab() { return enemyPrefab; }
 
-    public GameObject GetPathPrefab() { return pathPrefab; }
+    public List<Transform> GetWaypoints() 
+    {
+        var waveWayPoints = new List<Transform>();
+        foreach (Transform child in pathPrefab.transform)
+        {
+            waveWayPoints.Add(child);
+        }
+        return waveWayPoints; 
+    }
 
     public float GetTimeBetweenSpawns() { return timeBetweenSpawns; }
 
